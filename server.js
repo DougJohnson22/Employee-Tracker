@@ -1,6 +1,5 @@
 const mysql = require("mysql");
 const inquirer = require('inquirer');
-const { start } = require("repl");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -32,7 +31,7 @@ function start() {
             choices: ["Create", "View", "Update", "Delete"]
         }
     ]).then(answer => {
-        switch (answer) {
+        switch (answer.options) {
             case "Create":
                 createOption()
                 break;
@@ -65,7 +64,7 @@ function createOption() {
             choices: ["Department", "Role", "Employee"]
         }
     ]).then(answer => {
-        switch (answer) {
+        switch (answer.options) {
             case "Department":
                 createDept()
                 break;
@@ -177,7 +176,7 @@ function viewOptions() {
             choices: ["Departments", "Roles", "Employees"]
         }
     ]).then(answer => {
-        switch (answer) {
+        switch (answer.options) {
             case "Departments":
                 viewDept()
                 break;
@@ -231,7 +230,7 @@ function deleteOptions() {
             choices: ["Department", "Role", "Employee"]
         }
     ]).then(answer => {
-        switch (answer) {
+        switch (answer.options) {
             case "Department":
                 deleteDept()
                 break;
@@ -329,7 +328,7 @@ function updateOptions() {
             choices: ["Department", "Role", "Employee"]
         }
     ]).then(answer => {
-        switch (answer) {
+        switch (answer.options) {
             case "Department":
                 updateDept()
                 break;
@@ -405,6 +404,6 @@ function updateDept() {
 //                     })
 //                 }
 //             });
-            
+
 //     })
 // };
