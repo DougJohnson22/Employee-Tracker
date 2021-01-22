@@ -15,6 +15,7 @@ CREATE TABLE role (
     title VARCHAR(50) NOT NULL,
     salary DECIMAL(10,4),
     department_id SMALLINT UNSIGNED NOT NULL REFERENCES department(id),
+    manager_id SMALLINT NULL,
     PRIMARY KEY (id)
 );
 
