@@ -29,7 +29,7 @@ function start() {
             name: "options",
             message: "What would you like to do?",
             type: "list",
-            choices: ["Create", "View", "Delete"]
+            choices: ["Create", "View", "Update","Delete"]
         }
     ]).then(answer => {
         switch (answer) {
@@ -41,6 +41,9 @@ function start() {
                 break;
             case "Delete":
                 deleteOptions()
+                break;
+            case "Update":
+                updateOptions()
                 break;
             default:
                 console.log("Something went wrong, please reload application")
@@ -252,12 +255,12 @@ function deleteDept() {
         inquirer.prompt([
             {
                 type: "list",
-                message: "Which item would you like to bid on?",
+                message: "Which Department would you like to delete?",
                 name: "deptName",
                 choices: nameOfDept
             },
         ]).then(data => {
-            connection.query("DELETE FROM department WHERE id = ?", [data.deptName] , (err) => {
+            connection.query("DELETE FROM department WHERE id = ?", [data.deptName], (err) => {
                 if (err) {
                     throw err;
                 }
@@ -275,12 +278,12 @@ function deleteRole() {
         inquirer.prompt([
             {
                 type: "list",
-                message: "Which item would you like to bid on?",
+                message: "Which Role would you like to delete?",
                 name: "roleName",
                 choices: nameOfRole
             },
         ]).then(data => {
-            connection.query("DELETE FROM role WHERE id = ?", [data.roleName] , (err) => {
+            connection.query("DELETE FROM role WHERE id = ?", [data.roleName], (err) => {
                 if (err) {
                     throw err;
                 }
@@ -298,7 +301,7 @@ function deleteEmployee() {
         inquirer.prompt([
             {
                 type: "list",
-                message: "Which item would you like to bid on?",
+                message: "Which Employee would you like to delete?",
                 name: "empName",
                 choices: nameOfEmp
             },
@@ -308,6 +311,87 @@ function deleteEmployee() {
                     throw err;
                 }
                 console.log("succesfully deleted!")
+            })
+        })
+    });
+};
+// ----------------------------------------------------------------------
+
+
+// Update Functions -----------------------------------------------------
+
+function updateOptions() {
+    inquirer.prompt([
+        {
+            name: "options",
+            message: "What would you like to Update?",
+            type: "list",
+            choices: ["Department", "Role", "Employee"]
+        }
+    ]).then(answer => {
+        switch (answer) {
+            case "Department":
+                updateDept()
+                break;
+            case "Employee":
+                updateEmployee()
+                break;
+            default:
+                console.log("Something went wrong, please reload application")
+        }
+    });
+};
+
+function updateDept() {
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw err;
+
+        const nameOfDept = res.map(dept => ({ name: dept.name, value: dept.id }))
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which Department would you like to Update?",
+                name: "deptName",
+                choices: nameOfDept
+            },
+            {
+                type: "input",
+                message: "What would you like to change the name to?",
+                name: "deptInput"
+            },
+        ]).then(data => {
+            connection.query(`UPDATE department SET name = ? WHERE id = ?`, [data.deptInput,data.deptName], (err) => {
+                if (err) {
+                    throw err;
+                }
+                console.log("succesfully updated!")
+            })
+        })
+    });
+};
+function updateEmployee() {
+    connection.query("SELECT * FROM employee", function (err, res) {
+        if (err) throw err;
+
+        const nameOfEmp = res.map(emp => ({ name: emp.name, value: emp.id }))
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which Employee would you like to Update?",
+                name: "empName",
+                choices: nameOfEmp
+            },
+            {
+                type: "input",
+                message: "What would you like to change the role to?",
+                name: "deptInput"
+            },
+        ]).then(data => {
+            connection.query(`UPDATE employee SET role = ? WHERE id = ?`, [data.roleInput,data.empName], (err) => {
+                if (err) {
+                    throw err;
+                }
+                console.log("succesfully updated!")
             })
         })
     });
