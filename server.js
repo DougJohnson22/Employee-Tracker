@@ -29,7 +29,7 @@ function start() {
             name: "options",
             message: "What would you like to do?",
             type: "list",
-            choices: ["Create", "View", "Update","Delete"]
+            choices: ["Create", "View", "Update", "Delete"]
         }
     ]).then(answer => {
         switch (answer) {
@@ -333,9 +333,9 @@ function updateOptions() {
             case "Department":
                 updateDept()
                 break;
-            case "Employee":
-                updateEmployee()
-                break;
+            // case "Employee":
+            //     updateEmployee()
+            //     break;
             default:
                 console.log("Something went wrong, please reload application")
         }
@@ -360,7 +360,7 @@ function updateDept() {
                 name: "deptInput"
             },
         ]).then(data => {
-            connection.query(`UPDATE department SET name = ? WHERE id = ?`, [data.deptInput,data.deptName], (err) => {
+            connection.query(`UPDATE department SET name = ? WHERE id = ?`, [data.deptInput, data.deptName], (err) => {
                 if (err) {
                     throw err;
                 }
@@ -369,30 +369,42 @@ function updateDept() {
         })
     });
 };
-function updateEmployee() {
-    connection.query("SELECT * FROM employee", function (err, res) {
-        if (err) throw err;
+// function updateEmployee() {
+//     connection.query("SELECT * FROM employee", function (err, res) {
+//         if (err) throw err;
 
-        const nameOfEmp = res.map(emp => ({ name: emp.name, value: emp.id }))
-        inquirer.prompt([
-            {
-                type: "list",
-                message: "Which Employee would you like to Update?",
-                name: "empName",
-                choices: nameOfEmp
-            },
-            {
-                type: "input",
-                message: "What would you like to change the role to?",
-                name: "deptInput"
-            },
-        ]).then(data => {
-            connection.query(`UPDATE employee SET role = ? WHERE id = ?`, [data.roleInput,data.empName], (err) => {
-                if (err) {
-                    throw err;
-                }
-                console.log("succesfully updated!")
-            })
-        })
-    });
-};
+//         const nameOfEmp = res.map(emp => ({ name: emp.name, value: emp.id }))
+//         inquirer.prompt([
+//             {
+//                 type: "list",
+//                 message: "Which Employee would you like to Update?",
+//                 name: "empName",
+//                 choices: nameOfEmp
+//             }]).then(data => {
+
+//                 connection.query("SELECT * FROM role", function (err, res) {
+//                     if (err) throw err;
+
+//                 }).then(data => {
+//                     const roleID = res.map(id => ({ name: id.name, value: id.id }))
+//                     inquirer.prompt([
+
+//                         {
+//                             type: "list",
+//                             message: "What would you like to change the role to?",
+//                             name: "roleInput",
+//                             choices: roleID
+//                         },
+//                     ]).then(data => {
+//                         connection.query(`UPDATE employee SET role = ? WHERE id = ?`, [data.roleInput, data.empName], (err) => {
+//                             if (err) {
+//                                 throw err;
+//                             }
+//                             console.log("succesfully updated!")
+//                         })
+//                     })
+//                 }
+//             });
+            
+//     })
+// };
